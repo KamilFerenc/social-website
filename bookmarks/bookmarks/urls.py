@@ -21,5 +21,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('account.urls', namespace='account')),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='registration/logged_out.html'), name='logout'),
+    path('password-change/', auth_views.PasswordChangeView.
+         as_view(template_name='registration/password_change_form.html'), name='password_change'),
+    path('password-change-done', auth_views.PasswordChangeDoneView.
+         as_view(template_name='registration/password_change_done.html'), name='password_change_done'),
+
 ]
