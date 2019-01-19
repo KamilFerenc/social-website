@@ -8,7 +8,7 @@
     <p>Login or password is incorrect.
         Try again.</p>
     {% else %}
-    <p>Fill in form to login:</p>
+    <p>Fill in form to login or if you don't have account you can create them <a href="{% url 'account:register' %}">here</a>.</p>
     {% endif %}
     <div class="login-form">
             <form action="{% url 'login' %}" method="post">
