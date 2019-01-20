@@ -3,12 +3,18 @@
 {% block title %}Logowanie{% endblock %}
 
 {% block content %}
+    {% if messages %}
+    {% for message in messages %}
+        <h1> {{ message }}</h1>
+    {% endfor %}
+    {% endif %}
+
     <h1>Log In</h1>
     {% if form.errors %}
     <p>Login or password is incorrect.
         Try again.</p>
     {% else %}
-    <p>Fill in form to login or if you don't have account you can create them <a href="{% url 'account:register' %}">here</a>.</p>
+    <p>Fill in form to log in or or create an account <a href="{% url 'account:register' %}">here</a>.</p>
     {% endif %}
     <div class="login-form">
             <form action="{% url 'login' %}" method="post">
@@ -17,6 +23,6 @@
                 <input type="hidden" name="next" value="{{ next }}">
                 <p><input type="submit" value="Log In"></p>
             </form>
-            <p>Forgot password? Click the <a href="{% url 'password_reset' %}">link</a>.</p>
+            <p>Did you forget the password? Click the <a href="{% url 'password_reset' %}">link</a>.</p>
     </div>
 {% endblock %}
