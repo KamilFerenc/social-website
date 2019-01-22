@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, UserRegistrationForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -11,6 +11,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.auth.models import User
 from django.contrib import messages
+from .models import Profile
+
 
 def user_login(request):
     if request.method == "POST":
@@ -48,6 +50,7 @@ def register(request):
             new_user.is_active = False
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
+            profile = Profile.objects.create(user=new_user)
             current_site = get_current_site(request)
             mail_subject = 'Activate your social website account'
             message = render_to_string('account/acc_active_email.html', {
@@ -82,4 +85,23 @@ def activate(request, uidb64, token):
         return redirect('login')
     else:
         return HttpResponse('Activation link is invalid.')
+
+
+@login_required
+def edit(request):
+    if request.method == "POST":
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your changes have been saved.')
+            return redirect('account:dashboard')
+
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+
+    return render(request, 'account/edit.html', {'user_form': user_form, 'profile_form': profile_form})
+
 

@@ -5,4 +5,11 @@
 {% block content %}
     <h1>Main Page</h1>
     <p>Welcome on main page.</p>
+    {% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+    <p>You can <a href="{% url 'account:edit' %}">edit </a>your profile or
+        <a href="{% url 'password_change' %}">change </a>password.</p>
 {% endblock %}
