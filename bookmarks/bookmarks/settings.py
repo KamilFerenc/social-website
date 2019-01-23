@@ -107,6 +107,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Authentication
+AUTHENTICATION_BACKENDS = (
+    #'social.backends.facebook.Facebook2OAuth2',
+    #'social.backends.twitter.TwitterOAuth',
+    #'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'account.authentication.EmailBackend',
+)
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 

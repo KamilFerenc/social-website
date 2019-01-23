@@ -9,7 +9,8 @@ urlpatterns = [
     url(r'^$', views.main, name='main'),
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
     url(r'^register/$', views.register, name='register'),
-    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/'
+        r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),
     url(r'^edit/$', views.edit, name='edit'),
 ]

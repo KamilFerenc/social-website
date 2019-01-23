@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm
+from .forms import ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -19,11 +20,13 @@ def user_login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
+            user = authenticate(username=cd['username'],
+                                password=cd['password'])
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('Uwierzytelnienie zakończyło się sukcesem')
+                    return HttpResponse('Uwierzytelnienie '
+                                        'zakończyło się sukcesem')
                 else:
                     return HttpResponse('Konto jest zablokowane.')
             else:
@@ -63,12 +66,15 @@ def register(request):
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
 
-            return HttpResponse('Please check your email to complete the registration.')
+            return HttpResponse('Please check your email to complete the '
+                                'registration.')
         else:
-            return HttpResponse('This name is already taken, please use different name')
+            return HttpResponse('This name is already taken, please use '
+                                'different name')
     else:
         user_form = UserRegistrationForm()
-        return render(request, 'account/register.html', {'user_form': user_form})
+        return render(request, 'account/register.html',
+                      {'user_form': user_form})
 
 
 def activate(request, uidb64, token):
@@ -77,11 +83,13 @@ def activate(request, uidb64, token):
         new_user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError):
         new_user = None
-    if new_user is not None and account_activation_token.check_token(new_user, token):
+    if new_user is not None and \
+            account_activation_token.check_token(new_user, token):
         new_user.is_active = True
         new_user.save()
         login(request, new_user)
-        messages.success(request, 'Thank you for your confirmation. You can log in now.')
+        messages.success(request, 'Thank you for your confirmation. '
+                                  'You can log in now.')
         return redirect('login')
     else:
         return HttpResponse('Activation link is invalid.')
@@ -91,7 +99,8 @@ def activate(request, uidb64, token):
 def edit(request):
     if request.method == "POST":
         user_form = UserEditForm(instance=request.user, data=request.POST)
-        profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+        profile_form = ProfileEditForm(instance=request.user.profile,
+                                       data=request.POST, files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -102,6 +111,7 @@ def edit(request):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
 
-    return render(request, 'account/edit.html', {'user_form': user_form, 'profile_form': profile_form})
+    return render(request, 'account/edit.html', {'user_form': user_form,
+                                                 'profile_form': profile_form})
 
 
