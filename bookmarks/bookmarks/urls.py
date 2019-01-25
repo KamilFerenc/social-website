@@ -21,10 +21,15 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('',
          auth_views.LoginView.as_view(template_name='registration/login.html'),
          name='login'),
+
     path('', include('account.urls', namespace='account')),
+
+    path('images/', include('images.urls', namespace='images')),
+
     path('login/',
          auth_views.LoginView.as_view(template_name='registration/login.html'),
          name='login'),
