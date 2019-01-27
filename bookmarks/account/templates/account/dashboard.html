@@ -10,6 +10,15 @@
         <p>{{ message }}</p>
     {% endfor %}
     {% endif %}
+    {% with total_images_created=request.images_created.count %}
+    <p> Welcome on the main page. You have added {{ total_images_created }}
+        image{{total_images_created|pluralize:'s'}}.</p>
+    {% endwith %}
+
+    <p>Move bellow button for bookmarks. You will have chance for add images
+    from other website to your account.
+    <a href="javascript:{% include 'bookmarklet_launcher.js' %}"
+       class="button">Add images</a></p>
     <p>You can <a href="{% url 'account:edit' %}">edit </a>your profile or
         <a href="{% url 'password_change' %}">change </a>password.</p>
 {% endblock %}
