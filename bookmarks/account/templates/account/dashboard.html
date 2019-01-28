@@ -4,19 +4,19 @@
 
 {% block content %}
     <h1>Main Page</h1>
-    <p>Welcome on main page.</p>
+    <p>Welcome on main page {{ request.user.first_name }}.</p>
     {% if messages %}
     {% for message in messages %}
         <p>{{ message }}</p>
     {% endfor %}
     {% endif %}
-    {% with total_images_created=request.images_created.count %}
-    <p> Welcome on the main page. You have added {{ total_images_created }}
+    {% with total_images_created=request.user.images_created.count %}
+    <p> You have added {{ total_images_created }}
         image{{total_images_created|pluralize:'s'}}.</p>
     {% endwith %}
 
-    <p>Move bellow button for bookmarks. You will have chance for add images
-    from other website to your account.
+    <p>Drag green button to your bookmarks bar. You will have chance to add
+        images from other websites to your account.
     <a href="javascript:{% include 'bookmarklet_launcher.js' %}"
        class="button">Add images</a></p>
     <p>You can <a href="{% url 'account:edit' %}">edit </a>your profile or

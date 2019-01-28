@@ -1,8 +1,8 @@
 from .forms import ImageCreateForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Image
 
 @login_required
 def images_create(request):
@@ -14,9 +14,15 @@ def images_create(request):
             new_item.user = request.user
             new_item.save()
             messages.success(request, 'Image added.')
-            return redirect(new_item.get_absolure_url())
+            return redirect(new_item.get_absolute_url())
     else:
         form = ImageCreateForm(data=request.GET)
 
     return render(request, 'images/image/create.html', {'section': 'images',
                                                         'form': form})
+
+
+def detail_image(request, id, slug):
+    image = get_object_or_404(Image, id=id, slug=slug)
+    return render(request, 'images/image/detail.html', {'section': 'images',
+                                                        'image': image})
