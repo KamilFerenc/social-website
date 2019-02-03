@@ -9,5 +9,4 @@ urlpatterns = [
         name='detail'),
     url(r'^like/$', views.image_like, name='like'),
 
-
 ]
