@@ -39,6 +39,9 @@
       selected_image = jQuery(this)
         .children('img')
         .attr('src');
+      if (!selected_image.includes("http")) {
+      selected_image = document.domain + selected_image;
+      };
       jQuery('#bookmarklet').hide();
       window.open(
         site_url +
