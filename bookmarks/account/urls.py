@@ -13,4 +13,8 @@ urlpatterns = [
         r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),
     url(r'^edit/$', views.edit, name='edit'),
+    url(r'^users/$', views.user_list, name='user_list'),
+    url(r'^users/(?P<username>[-\w]+)/$',
+        views.user_detail, name='user_detail'),
+
 ]

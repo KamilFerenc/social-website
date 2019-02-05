@@ -152,3 +152,6 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+ABSOLUTE_URL_OVERRIDES = \
+    {'auth.user': lambda u: reverse_lazy('account:user_detail', args=[u.username])}
+
