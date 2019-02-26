@@ -6,6 +6,8 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .models import Image
+from common.decorators import ajax_required
+
 
 @login_required
 def images_create(request):
@@ -31,6 +33,7 @@ def detail_image(request, id, slug):
                                                         'image': image})
 
 
+@ajax_required
 @login_required
 @require_POST
 def image_like(request):
@@ -67,4 +70,3 @@ def image_list(request):
                       {'section': 'images', 'images': images})
     return render(request, 'images/image/list.html',
                   {'section': 'images', 'images': images})
-
