@@ -10,11 +10,13 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from common.decorators import ajax_required
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, \
     ProfileEditForm
 from .models import Profile, Contact
 from .tokens import account_activation_token
+from actions.models import Action
+from actions.utils import create_action
+from common.decorators import ajax_required
 
 
 def user_login(request):
@@ -40,7 +42,15 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'account/dashboard.html', {'section': 'dashboard'})
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list('id', flat=True)
+    if following_ids:
+        actions = actions.filter(user_id__in=following_ids)\
+            .select_related('user')\
+            .prefetch_related('content_object')
+    actions = actions[:10]
+    return render(request, 'account/dashboard.html', {'section': 'dashboard',
+                                                      'actions': actions})
 
 
 def main(request):
@@ -89,6 +99,7 @@ def activate(request, uidb64, token):
             account_activation_token.check_token(new_user, token):
         new_user.is_active = True
         new_user.save()
+        create_action(new_user, 'Create account')
         login(request, new_user)
         messages.success(request, 'Thank you for your confirmation. '
                                   'You can log in now.')
@@ -143,6 +154,7 @@ def user_follow(request):
             if action == "follow":
                 Contact.objects.get_or_create(user_from=request.user,
                                               user_to=user)
+                create_action(request.user, 'Follow', user)
             else:
                 Contact.objects.filter(user_from=request.user,
                                        user_to=user).delete()
