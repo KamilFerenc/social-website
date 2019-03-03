@@ -21,6 +21,7 @@
        class="button">Add images</a></p>
     <p>You can <a href="{% url 'account:edit' %}">edit </a>your profile or
         <a href="{% url 'password_change' %}">change </a>password.</p>
+    <h3>Do you want to see the most popular images? Click the<a href="{% url 'images:image_ranking' %}"> link</a>. </h3>
     <h2>What's new?</h2>
     <div id="action-list">
         {% for action in actions %}

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
+import django_heroku
 import os
 from django.urls import reverse_lazy
 
@@ -159,3 +160,6 @@ ABSOLUTE_URL_OVERRIDES = \
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
