@@ -1,1 +1,1 @@
-web: gunicorn Social_Website.wsgi
+web: gunicorn bookmarks.wsgi
