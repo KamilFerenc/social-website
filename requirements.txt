@@ -10,7 +10,7 @@ gunicorn==19.9.0
 idna==2.8
 oauthlib==3.0.0
 Pillow==5.4.1
-psycopg2==2.7.6.1
+psycopg2-binary
 pyasn1==0.4.5
 PyJWT==1.7.1
 python-jose==3.0.1
