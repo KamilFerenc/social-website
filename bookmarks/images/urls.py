@@ -9,5 +9,6 @@ urlpatterns = [
         name='detail'),
     url(r'^like/$', views.image_like, name='like'),
     url(r'^$', views.image_list, name='list'),
+    url(r'^ranking/$', views.image_ranking, name='image_ranking'),
 
 ]
