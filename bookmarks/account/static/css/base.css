@@ -267,6 +267,7 @@ img.user-detail {
 .action {
     clear:both;
     overflow:auto;
+    display: flex;
 }
 .action .images {
     float:left;
